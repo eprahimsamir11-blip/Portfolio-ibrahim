@@ -1,0 +1,220 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-ibm), "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-kufi), "Noto Kufi Arabic", ui-sans-serif, system-ui, sans-serif;
+  --color-paper: #f3efe7;
+  --color-paper-2: #ebe4d6;
+  --color-ink: #141413;
+  --color-ink-soft: #2a2824;
+  --color-muted: #6b6860;
+  --color-accent: #b84a2a;
+  --color-accent-dark: #8f351c;
+  --color-line: #ddd6c8;
+  --color-sand: #e7dfd1;
+  --color-admin: #f4f2ee;
+  --color-admin-ink: #1c1b19;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.site-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.img-zoom {
+  overflow: hidden;
+}
+
+.img-zoom img {
+  transition: transform 700ms ease;
+  transform-origin: center;
+}
+
+.img-zoom:hover img {
+  transform: scale(1.04);
+}
+
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -0.2rem;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 280ms ease;
+}
+
+.nav-link:hover::after,
+.nav-link[data-active="true"]::after {
+  width: 100%;
+}
+
+.reveal {
+  animation: fade-up 0.9s ease both;
+}
+
+.reveal-delay-1 {
+  animation-delay: 0.08s;
+}
+
+.reveal-delay-2 {
+  animation-delay: 0.16s;
+}
+
+.reveal-delay-3 {
+  animation-delay: 0.24s;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hairline {
+  height: 1px;
+  background: var(--color-line);
+}
+
+.admin-shell {
+  background: var(--color-admin);
+  color: var(--color-admin-ink);
+}
+
+.admin-input,
+.admin-textarea,
+.admin-select {
+  width: 100%;
+  border: 1px solid #d9d3c8;
+  background: #fff;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.95rem;
+  color: inherit;
+}
+
+.admin-input:focus,
+.admin-textarea:focus,
+.admin-select:focus {
+  outline: none;
+  border-color: var(--color-ink);
+}
+
+.admin-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.5rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.admin-btn-primary {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.admin-btn-primary:hover {
+  background: #000;
+}
+
+.admin-btn-ghost {
+  border: 1px solid #d9d3c8;
+  background: #fff;
+}
+
+.admin-btn-ghost:hover {
+  border-color: var(--color-ink);
+}
+
+.admin-btn-danger {
+  border: 1px solid #e3c4c0;
+  color: #9a2f1f;
+  background: #fff;
+}
+
+.admin-btn-danger:hover {
+  background: #9a2f1f;
+  color: #fff;
+}
+
+.skip-link {
+  position: absolute;
+  right: 1rem;
+  top: -3rem;
+  z-index: 80;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  padding: 0.5rem 0.9rem;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .reveal-delay-1,
+  .reveal-delay-2,
+  .reveal-delay-3 {
+    animation: none;
+  }
+
+  .img-zoom img,
+  .img-zoom:hover img {
+    transition: none;
+    transform: none;
+  }
+}
