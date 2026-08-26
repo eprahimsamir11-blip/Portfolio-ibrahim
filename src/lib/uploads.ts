@@ -1,8 +1,5 @@
 import crypto from "crypto";
-import fs from "fs/promises";
-import path from "path";
 
-export const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 export const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
 export const ALLOWED_MIME = new Set(["image/jpeg", "image/png", "image/webp"]);
 
@@ -40,12 +37,15 @@ export async function saveUploadedImage(file: File): Promise<SavedImage> {
   const outMeta = await sharp(output).metadata();
   const filename = `${Date.now()}-${crypto.randomBytes(6).toString("hex")}.webp`;
 
-  await fs.mkdir(UPLOAD_DIR, { recursive: true });
-  await fs.writeFile(path.join(UPLOAD_DIR, filename), output);
+  const { put } = await import("@vercel/blob");
+  const blob = await put(`uploads/${filename}`, output, {
+    access: "public",
+    contentType: "image/webp",
+  });
 
   return {
     filename,
-    url: `/uploads/${filename}`,
+    url: blob.url,
     mimeType: "image/webp",
     size: output.length,
     width: outMeta.width ?? null,
@@ -55,8 +55,7 @@ export async function saveUploadedImage(file: File): Promise<SavedImage> {
 }
 
 export async function deleteUploadedFile(url: string) {
-  if (!url.startsWith("/uploads/")) return;
-  const filename = path.basename(url);
-  if (!filename || filename.includes("..")) return;
-  await fs.unlink(path.join(UPLOAD_DIR, filename)).catch(() => undefined);
+  if (!url.includes("blob.vercel-storage.com")) return;
+  const { del } = await import("@vercel/blob");
+  await del(url).catch(() => undefined);
 }
