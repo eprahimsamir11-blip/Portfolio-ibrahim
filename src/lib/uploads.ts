@@ -1,7 +1,6 @@
 import crypto from "crypto";
 import fs from "fs/promises";
 import path from "path";
-import sharp from "sharp";
 
 export const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 export const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
@@ -25,6 +24,7 @@ export async function saveUploadedImage(file: File): Promise<SavedImage> {
     throw new Error("حجم الصورة أكبر من 8 ميغابايت.");
   }
 
+  const { default: sharp } = await import("sharp");
   const input = Buffer.from(await file.arrayBuffer());
   let image = sharp(input, { failOn: "none" }).rotate();
   const meta = await image.metadata();
